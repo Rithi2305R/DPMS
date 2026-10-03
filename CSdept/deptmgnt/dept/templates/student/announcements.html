@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Announcements - DeptMgnt{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <i class="fas fa-bullhorn me-2"></i>Announcements
+                </h2>
+                
+                <!-- Student Info Section - Fixed with safe fallbacks -->
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <h5>{{ user.get_full_name }}</h5>
+                        <p class="text-muted">
+                            Class: 
+                            {% if user.studentprofile.classroom %}
+                                {{ user.studentprofile.classroom.name }}
+                            {% else %}
+                                Not assigned
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <span class="badge bg-primary">
+                            Total: {{ announcements.count }} announcement{{ announcements.count|pluralize }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Debug Info (remove in production) -->
+                <div class="alert alert-info d-none"> <!-- Add 'd-none' to hide in production -->
+                    <small>
+                        <strong>Debug Info:</strong><br>
+                        User: {{ user.get_full_name }}<br>
+                        Has Student Profile: {{ user.studentprofile|yesno:"Yes,No" }}<br>
+                        Classroom: {{ user.studentprofile.classroom.name|default:"Not assigned" }}<br>
+                        Announcements Count: {{ announcements.count }}<br>
+                        {% for ann in announcements %}
+                        Announcement {{ forloop.counter }}: "{{ ann.title }}" for {{ ann.classroom.name }}<br>
+                        {% endfor %}
+                    </small>
+                </div>
+
+                <!-- Announcements List -->
+                {% for announcement in announcements %}
+                <div class="card mb-3 {% if announcement.important %}border-warning{% endif %}">
+                    <div class="card-header {% if announcement.important %}bg-warning text-dark{% else %}bg-light{% endif %}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                {% if announcement.important %}
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                {% else %}
+                                    <i class="fas fa-info-circle me-2"></i>
+                                {% endif %}
+                                {{ announcement.title }}
+                            </h5>
+                            <small>{{ announcement.created_at|date:"M d, Y H:i" }}</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ announcement.content|linebreaks }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                By: {{ announcement.created_by.user.get_full_name }} | 
+                                Class: {{ announcement.classroom.name }}
+                            </small>
+                            {% if announcement.important %}
+                                <span class="badge bg-warning text-dark">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>Important
+                                </span>
+                            {% else %}
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check me-1"></i>Read
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-5">
+                    <i class="fas fa-bullhorn fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No announcements yet</h5>
+                    <p class="text-muted">
+                        {% if user.studentprofile.classroom %}
+                            There are no announcements for <strong>{{ user.studentprofile.classroom.name }}</strong> at this time.
+                        {% else %}
+                            You are not assigned to any classroom. Please contact administrator.
+                        {% endif %}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

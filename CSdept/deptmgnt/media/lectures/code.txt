@@ -1,0 +1,126 @@
+# create project folder
+mkdir final_project && cd final_project
+
+# virtualenv
+python -m venv venv
+# mac/linux
+source venv/bin/activate
+# windows
+venv\Scripts\activate
+
+pip install --upgrade pip
+pip install django djangorestframework pillow django-crispy-forms
+
+# start project & initial app
+django-admin startproject projectname .
+python manage.py startapp core
+
+......
+
+Project one-line goal:
+Example: Department Management System to manage students, staff, attendance, marks, and announcements.
+
+User roles (comma separated):
+Example: Admin, Student, Staff
+
+MVP features (must-have, comma separated):
+Example: Student register, Admin approve, Login, Student list, Attendance marking, Marks entry, Announcements, Dashboard
+
+Nice-to-have features (optional):
+Example: CSV export, Email on approval, Timetable, File uploads for lectures
+
+Key data models + required fields (one model per line):
+Format: ModelName: field1(type,required/optional), field2(type,req/opt), ...
+Example: StudentProfile: roll_no(Char,required), department(Char,required), semester(Integer,required), photo(Image,optional)
+
+Approval/workflow details (short):
+Examples: Students register -> Admin approves -> Email sent or Auto-approve students from same-department emails
+
+Authentication details:
+Choose: username or email for login (or both). Also say if you want password reset and/or social login (Google).
+
+Static/CSS choice:
+Choose: Use Bootstrap CDN (no local static) OR Use local static files (dept/static/)
+
+File upload requirements (if any):
+Example: Profile photo (jpg/png, max 2MB), Lecture files (pdf/docx, max 10MB)
+
+Pages you want (list):
+Example: Home, Login, Register, Student Dashboard, Staff Dashboard, Admin Approvals, Attendance, Marks, Announcements, Profile
+
+Sample data to include (optional):
+Example: Create admin: admin@dept.com/pass123, create 5 sample students in CSE department
+
+Reports & exports required:
+Example: Attendance CSV by month, Marks PDF per student
+
+Database for deployment:
+Choose: SQLite (dev only) or PostgreSQL (production-ready)
+
+Deployment target (optional):
+Example: Render, Heroku, VPS (Ubuntu), or only local
+
+UI preferences (colors, minimal/modern, any template):
+Example: Minimal, Bootstrap default, primary color = #0d6efd
+
+Tests & documentation:
+Choose: Include basic unit tests (yes/no) and Include README + ER diagram (yes/no)
+
+Deadline / deliverables you want from me:
+Example: Starter project zip + instructions or Full scaffold + sample templates + instructions
+
+Anything else / special rules:
+Example: Timezone IST (Asia/Kolkata), avoid third-party paid services
+
+........
+
+Assumptions I used (based on your answers, no extra questions):
+
+Project name: deptmgnt
+
+App name: dept
+
+Login by username (no social login)
+
+Use Bootstrap for UI (via CDN) and local photos/media for department/photo uploads
+
+Students register → must be approved by Admin/HOD/Staff (approval flow)
+
+Staff create Announcements & Lecture uploads → email notifications to students (class scope)
+
+Staff can edit/enter records; Students can view only
+
+Staff access limited to their assigned classes (ManyToMany)
+
+HOD has a specific advanced module for performance/stats/report generation
+
+........
+
+Create Python virtualenv and install packages
+
+Start Django project + dept app
+
+Configure settings (static, media, auth, email placeholders)
+
+Build models (User, Department, ClassRoom, StudentProfile, StaffProfile, Attendance, Mark, Announcement, Lecture, AnnouncementRead) — code provided
+
+Make migrations, create superuser
+
+Implement signals to auto-create profiles
+
+Implement registration + approval views & templates
+
+Implement staff dashboards, class-limited views, attendance/marks entry
+
+Implement announcements & lecture upload with email sending (sync for dev; note Celery option)
+
+Implement Home page with department description and Bootstrap Toast pop-up notifications
+
+Implement HOD module (aggregate queries, exports, generate PDF/DOC)
+
+Admin customizations + static/media files (logo, photos)
+
+Test flows, runserver, and optionally switch to PostgreSQL for production
+
+.....
+

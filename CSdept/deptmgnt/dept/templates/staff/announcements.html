@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}Staff Announcements - DeptMgnt{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <!-- Create Announcement Form -->
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                    <i class="fas fa-bullhorn me-2"></i>Create New Announcement
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" name="title" class="form-control" placeholder="Enter announcement title" required>
+                        </div>
+                        
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Content</label>
+                            <textarea name="content" class="form-control" rows="4" placeholder="Enter announcement content" required></textarea>
+                        </div>
+                        
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Select Classroom</label>
+                            <select name="classroom" class="form-select" required>
+                                <option value="">Select a classroom</option>
+                                <!-- Add All Classes Option -->
+                                <option value="all">📢 ALL CLASSES (Send to everyone)</option>
+                                <option disabled>──────────</option>
+                                {% for classroom in user.staffprofile.classes.all %}
+                                <option value="{{ classroom.id }}">{{ classroom.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-muted">Choose "ALL CLASSES" to send announcement to every student</small>
+                        </div>
+                        
+                        <div class="col-md-12 mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="important" class="form-check-input" id="important">
+                                <label class="form-check-label" for="important">
+                                    <i class="fas fa-exclamation-circle me-1"></i>Mark as Important
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Publish Announcement
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Existing Announcements -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4 class="card-title">
+                    <i class="fas fa-list me-2"></i>Your Announcements
+                    <span class="badge bg-primary ms-2">{{ announcements.count }}</span>
+                </h4>
+            </div>
+            <div class="card-body">
+                {% if announcements %}
+                    {% for announcement in announcements %}
+                    <div class="card mb-3 {% if announcement.important %}border-warning{% endif %}">
+                        <div class="card-header {% if announcement.important %}bg-warning text-dark{% else %}bg-light{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    {% if announcement.important %}
+                                        <i class="fas fa-exclamation-circle me-2"></i>
+                                    {% else %}
+                                        <i class="fas fa-info-circle me-2"></i>
+                                    {% endif %}
+                                    {{ announcement.title }}
+                                </h5>
+                                <small>{{ announcement.created_at|date:"M d, Y H:i" }}</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ announcement.content|linebreaks }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    {% if announcement.classroom %}
+                                        Class: {{ announcement.classroom.name }}
+                                    {% else %}
+                                        <strong>📢 ALL CLASSES</strong>
+                                    {% endif %}
+                                    | Created: {{ announcement.created_at|timesince }} ago
+                                </small>
+                                <div>
+                                    {% if announcement.classroom %}
+                                        <span class="badge bg-secondary">Single Class</span>
+                                    {% else %}
+                                        <span class="badge bg-success">All Classes</span>
+                                    {% endif %}
+                                    {% if announcement.important %}
+                                        <span class="badge bg-warning text-dark ms-1">Important</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-bullhorn fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No announcements created yet</h5>
+                    <p class="text-muted">Create your first announcement using the form above</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
