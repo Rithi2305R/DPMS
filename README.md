@@ -10,6 +10,11 @@ A web-based Department Management System developed using Python and Django to ma
 - CSS
 - Bootstrap
 - SQLite
+- Chatgpt
+- Deepseek ai
+- Claude ai
+- perplexity
+- Gemini
 
 ## Features
 
