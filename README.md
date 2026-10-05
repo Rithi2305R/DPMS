@@ -55,11 +55,11 @@ A web-based Department Management System developed using Python and Django to ma
 
 ## Project Structure
 
-The project is developed using the Django framework and follows a modular structure for managing different department activities.
+The project is developed using the Django framework and follows a modular structure for managing different department activities. Using Interactive Ai tools to build a better form of webpage,attractive user friendly features and templates. 
 
 ## Database
 
-SQLite is used as the database for storing application data.
+SQLite is used as the database for storing application data. Django ORM is used to manage database. 
 
 ## Purpose
 
@@ -75,4 +75,4 @@ The main purpose of this project is to provide a centralized platform for managi
 
 ## Author
 
-Developed as an academic project using Python and Django.
+Developed as an academic project using Python Django with AI tools.
